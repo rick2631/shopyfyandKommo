@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "-": "^0.0.1",
+    "axios": "^1.6.8",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "helmet": "^7.1.0",
+    "kommo": "^1.0.20",
+    "nodemon": "^3.1.0",
+    "pg": "^8.11.5",
+    "pg-hstore": "^2.3.4",
+    "request": "^2.88.2",
+    "sequelize": "^6.37.3",
+    "shopify-api-node": "^3.13.1"
+  }
+}
