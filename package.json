@@ -16,5 +16,8 @@
     "request": "^2.88.2",
     "sequelize": "^6.37.3",
     "shopify-api-node": "^3.13.1"
+  },
+  "scripts": {
+    "dev": "nodemon app.js"
   }
 }
