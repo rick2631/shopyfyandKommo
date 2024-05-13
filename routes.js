@@ -3,6 +3,7 @@ const router = express.Router();
 const kommo = require('./kommo'); // Importa la función desde kommo.js
 const kommopost = require('./Kommopost');
 
+
 router.get('/', (req, res) => {
     res.send("Hola desde el servidor");
 });
@@ -121,10 +122,46 @@ router.post('/productvist', async (req, res) => {
     }
 });
 
+// para guardar cliente potencial
+// Ruta para manejar las solicitudes del Webhook de Shopify
+router.post('/create-potential-customer', async (req, res) => {
+    try {
+        // Verificar si el productId está presente y tiene un valor definido
+        if (!req.body.productId) {
+            return res.status(400).json({ error: 'El ID del producto no está presente en la solicitud o es inválido' });
+        }
+
+        // Importa el modelo de Producto
+        const Product = require('./models/Products'); 
+
+        // Obtener la información del producto desde la base de datos
+        const productId = req.body.productId; // Supongamos que recibes el ID del producto en el cuerpo de la solicitud
+        const product = await Product.findOne({ where: { id: productId } });
+
+        
+        // Verificar si el producto existe en la base de datos
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado en la base de datos' });
+        }
+
+        // Crear el cliente potencial utilizando la información del producto
+        const potentialCustomer = {
+            name: product.title, // Utiliza el título del producto como nombre del cliente potencial
+            // Agrega más campos del cliente potencial si es necesario
+        };
+
+        // Si deseas ver el cliente potencial, puedes imprimirlo en la consola
+        console.log('Cliente potencial:', potentialCustomer);
+
+        // Si no necesitas enviar datos a Kommo, puedes simplemente enviar una respuesta exitosa al cliente
+        res.status(200).json({ message: 'Cliente potencial creado con éxito', data: potentialCustomer });
+    } catch (error) {
+        console.error('Error al crear cliente potencial:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+});
 
 
-
-//Ruta para trabajar Webhook customers 
 router.post('/customers', async (req, res) => {    
 
  kommopost.addCustomers(req.body)
