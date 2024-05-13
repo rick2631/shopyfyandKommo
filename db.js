@@ -9,11 +9,6 @@ const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}
   native: false,
 });
 
-// Cargar el modelo Product
-const ProductModelPath = path.join(__dirname, 'models', 'Products.js'); // Ruta al archivo de tu modelo Product
-const products = require(ProductModelPath)(sequelize); // Inyectar la conexión a Sequelize en el modelo Product
-
 module.exports = {
-  conn: sequelize,
-  products: products,
+  sequelize: sequelize,
 };

@@ -1,5 +1,4 @@
 const request = require('request');
-const guardarProducto = require('./guardarProductos');
 require('dotenv').config();
 
 let apiKey = process.env.SHOPIFY_API_KEY;
@@ -37,7 +36,6 @@ makeShopifyRequest('products')
     .then((data) => {
         if (data && data.products && data.products.length > 0) {
             const primerProducto = data.products[0];
-            guardarProducto(primerProducto);
         } else {
             throw new Error('No se encontraron productos en la respuesta de la API de Shopify.');
         }

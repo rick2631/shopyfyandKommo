@@ -1,14 +1,14 @@
 
 const Product = require('./models/Products');
 
-function guardarProducto(producto) {
+async function guardarProducto(producto) {
     // Verificar si el producto recibido está definido
     if (!producto) {
         throw new Error('El producto no está definido');
     }
 
     // Crear un nuevo objeto de Producto utilizando el modelo Sequelize
-    Product.create({
+    return Product.create({
         id: producto.id,
         title: producto.title,
         body_html: producto.body_html,
@@ -34,11 +34,12 @@ function guardarProducto(producto) {
         // Define más propiedades del producto si es necesario
     })
     .then((productoGuardado) => {
-        console.log('Producto guardado exitosamente:', productoGuardado);
+        console.log('Producto guardado exitosamente');
+        return productoGuardado.id;
     })
     .catch((error) => {
         console.error('Error al guardar el producto:', error);
     });
 }
 
-module.exports = guardarProducto;
+module.exports = { guardarProducto };

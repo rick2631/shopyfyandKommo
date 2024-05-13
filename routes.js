@@ -96,22 +96,24 @@ router.get('/getpotentialcustomers', async (req, res) => {
     }
 });
 router.post('/productvist', async (req, res) => {
+    // Verificar si el cuerpo de la solicitud está presente
+    if (!req.body) {
+        res.status(400).send('El cuerpo de la solicitud está vacío');
+    }
     try {
-
         const shopify = require('./shopify');
-        const products = await shopify.makeShopifyRequest('products',`handle=${req.body.slug.replace('/products/',"")}`);
-        console.log(products);
-        // Verificar si el cuerpo de la solicitud está presente
-        if (!req.body) {
-            throw new Error('El cuerpo de la solicitud está vacío');
-        }
 
+        const response = await shopify.makeShopifyRequest('products',`handle=${req.body.slug.replace('/products/',"")}`);
 
-        // Imprimir el cuerpo de la solicitud en la consola
-        console.log(req.body);
+        const dbProduct = require('./guardarProductos');
 
+        await dbProduct.guardarProducto(response.products[0]).then(result => {
+            console.log(result)
+        })
+        
         // Enviar una respuesta exitosa al cliente
         res.status(200).send('Solicitud POST recibida con éxito');
+
     } catch (error) {
         // Manejar errores
         console.error(error);
