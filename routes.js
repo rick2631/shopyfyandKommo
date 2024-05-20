@@ -203,21 +203,35 @@ router.get('/getKommoData', async (req, res) => {
     
 });
 router.post('/webhook', async (req, res) => {
-    try {
-        const { id, email, line_items, updated_at } = req.body;
-        console.log(req.body);
 
+
+    try {
+        const { id, email, line_items, updated_at, first_name,// Ajusta según los datos disponibles
+        last_name,phone} = req.body;
+        console.log(req.body);
+        const products = line_items.map(item => item.title).join(', ')
+        await cartAbandonado({
+            id,          // Mantén el id como string
+            email,       // Mantén el email como string
+            products,
+            updated_at,  // Mantén updated_at como string
+            first_name, // Ajusta según los datos disponibles
+            last_name,
+            phone,
+             // Ajusta según los datos disponibles
+        });
+        
         // Verificar si el checkout está abandonado
-        const currentTime = new Date();
+        /*const currentTime = new Date();
         const updatedTime = new Date(updated_at);
         const timeDifference = (currentTime - updatedTime) / 1000 / 60; // Diferencia en minutos
 
         // Considerar carrito abandonado si han pasado más de 30 minutos sin actualizarse
         if (timeDifference > 30) {
-            const products = line_items.map(item => item.title).join(', ');
+            const products = line_items.map(item => item.title).join(', ');*/
 
             // Enviar la información a Kommo (amoCRM)
-            try {
+            /*try {
                 await cartAbandonado({
                     id,          // Mantén el id como string
                     email,       // Mantén el email como string
@@ -234,11 +248,10 @@ router.post('/webhook', async (req, res) => {
             }
         }
 
-        res.status(200).send('Webhook recibido');
+        res.status(200).send('Webhook recibido');*/
     } catch (error) {
         console.error('Error al procesar el webhook:', error);
         res.status(500).send('Error interno del servidor');
     }
 });
-
 module.exports = router;
